@@ -16,7 +16,7 @@ const drawSnake = () => {
     ctx.fillStyle = "#ddd"
 
     snake.forEach((position, index) => {
-        if(index === snake.length - 1){
+        if (index === snake.length - 1) {
             ctx.fillStyle = "gray"
         }
 
@@ -26,28 +26,28 @@ const drawSnake = () => {
 
 // Movimento da cobra
 const moveSnake = () => {
-    if(!direction) return
+    if (!direction) return
 
     const head = snake.at(-1) //ou snake.leght-1
 
-// Mover para direita
-    if(direction === "right"){
+    // Mover para direita
+    if (direction === "right") {
         snake.push({ x: head.x + size, y: head.y })
     }
 
-// Mover para esquerda
-    if(direction === "left"){
+    // Mover para esquerda
+    if (direction === "left") {
         snake.push({ x: head.x - size, y: head.y })
     }
 
-// Mover para baixo
-if(direction === "down"){
-    snake.push({ x: head.x, y: head.y + size })
-}
-// Mover para cima
-if(direction === "up"){
-    snake.push({ x: head.x, y: head.y - size })
-}
+    // Mover para baixo
+    if (direction === "down") {
+        snake.push({ x: head.x, y: head.y + size })
+    }
+    // Mover para cima
+    if (direction === "up") {
+        snake.push({ x: head.x, y: head.y - size })
+    }
 
     snake.shift()
 }
@@ -61,7 +61,7 @@ const gameLoop = () => {
     drawSnake()
 
     loopId = setTimeout(() => {
-        gameLoop
+        gameLoop()
     }, 300)
 }
 
@@ -69,13 +69,21 @@ gameLoop()
 
 // Evento das setas
 document.addEventListener("keydown", ({ key }) => {
-    
-    if(key === "ArrowRight"){
+
+    if (key === "ArrowRight" && direction !== "left") {
         direction = "right"
     }
 
-    if(key === "ArrowLeft"){
+    if (key === "ArrowLeft" && direction !== "right") {
         direction = "left"
+    }
+    
+    if (key === "ArrowDown" && direction !== "up") {
+        direction = "down"
+    }
+
+    if (key === "ArrowUp" && direction !== "down") {
+        direction = "up"
     }
 
 })

@@ -3,6 +3,8 @@ const ctx = canvas.getContext("2d")
 
 const size = 30
 
+const audio = new Audio('../assets/audio/assets_audio.mp3')
+
 const snake = [{ x: 270, y: 240 }]
 
 // Função para spawn aleatorio da comida
@@ -112,10 +114,36 @@ const checkEat = () => {
 
     if (head.x == food.x && head.y == food.y) {
         snake.push(head)
+        audio.play()
 
-        food.x = randomPosition(),
-        food.y = randomPosition(),
+        let x = randomPosition()
+        let y = randomPosition()
+
+        while (snake.find((position) => position.x == x && position.y == y)) {
+            x = randomPosition()
+            y = randomPosition()
+        }
+
+        food.x = x
+        food.y = y
         food.color = randomColor()
+    }
+}
+
+const checkCollision = () => {
+    const head = snake[snake.length - 1]
+    const canvasLimit = canvas.width - size
+
+    const wallCollision = 
+        head.x < 0 || head.x > canvasLimit || head.y < 0 || head.y > canvasLimit
+
+    const selfCollision = snake.find(() => {
+         return position.x == head && position.y == y   
+    })
+        
+
+    if(wallCollision || selfC) {
+        alert("Voce perdeu")
     }
 }
 
@@ -125,9 +153,10 @@ const gameLoop = () => {
     ctx.clearRect(0, 0, 600, 600)
     drawGrid()
     drawFood()
-    checkEat()
-    moveSnake()
     drawSnake()
+    moveSnake()
+    checkEat()
+    checkCollision()
 
     loopId = setTimeout(() => {
         gameLoop()

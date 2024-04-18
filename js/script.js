@@ -1,11 +1,22 @@
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext("2d")
 
+const score = document.querySelector('.score-value')
+const finalScore = document.querySelector('.final-score>span')
+const menu = document.querySelector('.menu-screen')
+const buttonPlay = document.querySelector('.btn-play')
+
 const size = 30
 
 const audio = new Audio('../assets/audio/assets_audio.mp3')
 
-const snake = [{ x: 270, y: 240 }]
+const initialPosition = { x: 270, y: 240 }
+
+let snake = [initialPosition]
+
+const incrementScore = () => {
+    score.innerHTML = +score.innerHTML + 10
+}
 
 // Função para spawn aleatorio da comida
 const randomNumber = (min, max) => {
@@ -115,6 +126,7 @@ const checkEat = () => {
     if (head.x == food.x && head.y == food.y) {
         snake.push(head)
         audio.play()
+        incrementScore()
 
         let x = randomPosition()
         let y = randomPosition()
@@ -140,11 +152,11 @@ const checkCollision = () => {
         head.x < 0 || head.x > canvasLimit || head.y < 0 || head.y > canvasLimit
     // Colisão própia
     const selfCollision = snake.find((position, index) => {
-         return index < neckIndex && position.x == head && position.y == y   
+         return index < neckIndex && position.x == head && position.y == head   
     })
         
 
-    if(wallCollision || selfC) {
+    if(wallCollision || selfCollision) {
         gameOver()
     }
 }
@@ -152,6 +164,10 @@ const checkCollision = () => {
 // GAME OVER
 const gameOver = () => {
     direction = undefined
+
+    menu.style.display = "flex" 
+    finalScore.innerHTML = score.innerHTML
+    canvas.style.filter = "bluer(2px)"
 }
 
 const gameLoop = () => {
@@ -191,4 +207,12 @@ document.addEventListener("keydown", ({ key }) => {
         direction = "up"
     }
 
+})
+
+buttonPlay.addEventListener('click', () => {
+    score.innerHTML = "00"
+    menu.style.display = "none"
+    canvas.style.filter = "none"
+
+    snake = [initialPosition]
 })

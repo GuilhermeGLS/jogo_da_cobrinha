@@ -130,21 +130,28 @@ const checkEat = () => {
     }
 }
 
+// Função de colisão
 const checkCollision = () => {
     const head = snake[snake.length - 1]
     const canvasLimit = canvas.width - size
-
+    const neckIndex = snake.length - 2
+    // Colisão com a parede
     const wallCollision = 
         head.x < 0 || head.x > canvasLimit || head.y < 0 || head.y > canvasLimit
-
-    const selfCollision = snake.find(() => {
-         return position.x == head && position.y == y   
+    // Colisão própia
+    const selfCollision = snake.find((position, index) => {
+         return index < neckIndex && position.x == head && position.y == y   
     })
         
 
     if(wallCollision || selfC) {
-        alert("Voce perdeu")
+        gameOver()
     }
+}
+
+// GAME OVER
+const gameOver = () => {
+    direction = undefined
 }
 
 const gameLoop = () => {

@@ -125,7 +125,7 @@ const checkEat = () => {
 
     if (head.x == food.x && head.y == food.y) {
         snake.push(head)
-        audio.play()
+        audio.play().catch(e => console.log("Erro ao tocar áudio:", e));
         incrementScore()
 
         let x = randomPosition()
